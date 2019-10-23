@@ -1,0 +1,572 @@
+/* INTEGRANTES
+Ágatha Nayara Souza Ramos      RM82585
+Julia Assunção Silva           RM78706
+Leandro Farias Lourenço        RM81850 
+Luan Santos Teixeira           RM83528
+Lucas Cesar Soares             RM83757
+*/
+
+DROP TABLE EMA_T_ADM CASCADE CONSTRAINTS;
+DROP TABLE EMA_T_ALUNO CASCADE CONSTRAINTS;
+DROP TABLE EMA_T_DISCIPLINA CASCADE CONSTRAINTS;
+DROP TABLE EMA_T_ENDERECO CASCADE CONSTRAINTS;
+DROP TABLE EMA_T_MATRICULA CASCADE CONSTRAINTS;
+DROP TABLE EMA_T_USUARIO CASCADE CONSTRAINTS;
+DROP SEQUENCE sq_cd_usuario;
+DROP SEQUENCE sq_cd_disciplina;
+
+
+CREATE SEQUENCE sq_cd_usuario
+    START WITH 1
+    INCREMENT BY 1;
+
+CREATE SEQUENCE sq_cd_disciplina
+    START WITH 1
+    INCREMENT BY 1;
+    
+CREATE TABLE ema_t_adm (
+    cd_usuario                 NUMBER(4) NOT NULL,
+    ds_email_adm               VARCHAR2(50) NOT NULL,
+    ds_senha_adm               VARCHAR2(30) NOT NULL
+);
+
+ALTER TABLE ema_t_adm 
+    ADD CONSTRAINT ema_t_adm_pk 
+    PRIMARY KEY ( cd_usuario );
+
+CREATE TABLE ema_t_aluno (
+    cd_usuario                 NUMBER(4) NOT NULL,
+    ds_email_aluno             VARCHAR2(50) NOT NULL,
+    ds_senha_aluno             VARCHAR2(30) NOT NULL
+);
+
+ALTER TABLE ema_t_aluno
+    ADD CONSTRAINT ema_t_aluno_pk 
+    PRIMARY KEY ( cd_usuario );
+
+CREATE TABLE ema_t_disciplina (
+    cd_disciplina                        NUMBER(4) NOT NULL, 
+    cd_usuario                           NUMBER(4) NOT NULL,
+    nm_disciplina                        VARCHAR2(30) NOT NULL,
+    dt_registro                          DATE NOT NULL
+);
+
+ALTER TABLE ema_t_disciplina 
+    ADD CONSTRAINT ema_t_disciplina_pk 
+    PRIMARY KEY ( cd_disciplina );
+
+CREATE TABLE ema_t_endereco (
+    cd_usuario                 NUMBER(4) NOT NULL,
+    nr_cep                     NUMBER(8) NOT NULL,
+    nm_rua                     VARCHAR2(50) NOT NULL,
+    nm_cidade                  VARCHAR2(30) NOT NULL,
+    nm_uf                      VARCHAR2(2) NOT NULL,
+    nm_bairro                  VARCHAR2(30) NOT NULL
+);
+
+ALTER TABLE ema_t_endereco 
+    ADD CONSTRAINT ema_t_endereco_pk 
+    PRIMARY KEY ( cd_usuario );
+
+CREATE TABLE ema_t_matricula ( 
+    cd_usuario                             NUMBER(4) NOT NULL,
+    cd_disciplina                          NUMBER(4) NOT NULL,
+    dt_matricula                           DATE NOT NULL
+);
+
+ALTER TABLE ema_t_matricula 
+    ADD CONSTRAINT ema_t_matricula_pk 
+    PRIMARY KEY ( cd_usuario );
+
+CREATE TABLE ema_t_usuario (
+    cd_usuario      NUMBER(4) NOT NULL,
+    nm_usuario      VARCHAR2(50) NOT NULL,
+    nr_celular      NUMBER(11) NOT NULL,
+    nr_cpf          NUMBER(11) NOT NULL,
+    ds_sexo         CHAR(1) NOT NULL,
+    dt_nascimento   DATE NOT NULL
+);
+
+ALTER TABLE ema_t_usuario  
+    ADD CONSTRAINT ema_t_usuario_pk  
+    PRIMARY KEY ( cd_usuario );
+
+
+
+ALTER TABLE ema_t_usuario 
+    ADD CONSTRAINT un_cpf 
+    UNIQUE ( nr_cpf );
+
+ALTER TABLE ema_t_aluno
+    ADD CONSTRAINT un_email_aluno 
+    UNIQUE ( ds_email_aluno );
+
+ALTER TABLE ema_t_adm
+    ADD CONSTRAINT un_email_adm 
+    UNIQUE ( ds_email_adm );
+
+
+ALTER TABLE ema_t_adm
+    ADD CONSTRAINT adm_fk FOREIGN KEY ( cd_usuario )
+        REFERENCES ema_t_usuario ( cd_usuario );
+
+ALTER TABLE ema_t_aluno
+    ADD CONSTRAINT aluno_fk FOREIGN KEY ( cd_usuario )
+        REFERENCES ema_t_usuario ( cd_usuario );
+
+ALTER TABLE ema_t_disciplina
+    ADD CONSTRAINT disciplina_fk FOREIGN KEY ( cd_usuario )
+        REFERENCES ema_t_adm ( cd_usuario );
+
+ALTER TABLE ema_t_endereco
+    ADD CONSTRAINT endereco_fk FOREIGN KEY ( cd_usuario )
+        REFERENCES ema_t_usuario ( cd_usuario );
+
+ALTER TABLE ema_t_matricula
+    ADD CONSTRAINT matricula_aluno_fk FOREIGN KEY ( cd_usuario )
+        REFERENCES ema_t_aluno ( cd_usuario );
+
+
+ALTER TABLE ema_t_matricula
+    ADD CONSTRAINT matricula_disciplina_fk FOREIGN KEY ( cd_disciplina )
+        REFERENCES ema_t_disciplina ( cd_disciplina );
+
+commit;
+
+
+
+
+/* INTEGRANTES
+Ágatha Nayara Souza Ramos      RM82585
+Julia Assunção Silva           RM78706
+Leandro Farias Lourenço        RM81850 
+Luan Santos Teixeira           RM83528
+Lucas Cesar Soares             RM83757
+*/
+
+-- INSERT'S DA TABELA EMA_T_USUARIO
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Brett','11134773238',78446147590,'M','22/11/96');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Carol','11449027755',41312821623,'F','31/08/87');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Preston','11095388108',83378888956,'M','01/07/84');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Abbot','11660816139',95971400870,'F','26/06/82');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Evelyn','11515406763',20818600430,'M','13/06/80');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Miranda','11635267697',75302548996,'M','20/04/87');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Stewart','11209011835',49090562181,'F','14/08/72');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Moana','11195461015',12601974192,'F','18/10/80');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Emery','11121146914',76320786774,'F','06/10/01');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Theodore','11587115318',97725701994,'M','27/06/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Velma','11815875039',65280882476,'M','03/06/11');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Eagan','11549461306',38488055268,'F','10/02/90');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Aiko','11546469396',61114260554,'F','12/09/06');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Christopher','11801306939',22005558013,'F','06/08/76');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Craig','11336573222',25275646522,'F','28/09/97');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Karina','11619858056',73899205856,'M','26/06/99');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Lisandra','11723468044',19766051487,'M','26/09/71');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Edward','11326472862',59639231901,'M','28/03/09');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Stuart','11211038262',66289040446,'F','23/10/01');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hedda','11731523124',89467120708,'M','14/04/00');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Miriam','11047920159',92653602154,'F','17/06/03');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Shoshana','11038612699',24700086108,'F','06/05/07');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Plato','11104824976',14741870636,'M','12/01/82');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Xena','11384949001',44500469374,'F','23/11/08');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Ella','11792670096',51293693606,'M','26/03/76');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Cody','11502217247',63827657989,'M','26/10/89');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Chandler','11457358986',78773410949,'M','27/06/76');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Nissim','11069143266',68463378689,'F','20/07/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Kirestin','11113745910',26607097188,'M','24/07/92');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Maxwell','11934742979',94270908791,'M','24/01/88');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Quynn','11659274254',45971558242,'F','15/05/83');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Murphy','11911671560',62021002545,'F','11/08/08');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Jack','11993089638',73856404630,'M','15/04/82');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Madaline','11843004942',95160759240,'F','30/12/08');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Malachi','11718102543',19970786943,'M','18/12/77');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Justin','11540091291',45664703928,'F','29/11/08');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Lesley','11768106584',70122832142,'F','17/06/94');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Germane','11812824247',61264409207,'F','04/04/72');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Chelsea','11655892496',84109611643,'F','02/04/81');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Quintessa','11206116549',17848681782,'F','27/02/95');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hayley','11259439135',75077093765,'F','29/03/73');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Arden','11698370600',67371797685,'M','21/07/73');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Leigh','11021692619',56677309754,'M','21/05/95');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Linda','11029860892',25630141504,'F','20/06/78');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Ezra','11862323127',58438627959,'F','31/08/91');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Todd','11389272515',84579237591,'F','23/05/12');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Maggy','11413868604',17990754503,'M','13/01/99');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Barclay','11547446428',49800470429,'F','14/09/12');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Julian','11635479156',14024115767,'F','31/05/11');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Orson','11274160174',47184245785,'F','09/07/89');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Wyatt','11734275301',81170896399,'M','10/08/84');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Wyatt','11597710040',65022374523,'M','04/07/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Yasir','11081814757',78303051615,'M','20/09/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Joel','11548030293',65998895010,'M','23/02/01');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Kameko','11173071066',79018650203,'F','24/07/76');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Rina','11738462532',12141659317,'F','31/05/04');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Lucy','11358130178',87606701172,'F','03/07/07');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Dorothy','11157902397',95918416356,'M','11/10/85');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Celeste','11066025498',92419053572,'M','08/08/85');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Willa','11407791940',64778739545,'F','07/11/88');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Velma','11538421123',16167872854,'M','21/09/98');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Kieran','11622196424',56942157240,'M','21/01/97');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Phyllis','11686302240',55398423804,'M','23/01/06');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Abbot','11146243132',80898872969,'F','20/12/02');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Donovan','11338936937',92136970866,'M','25/09/72');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hoyt','11981252813',68243760367,'F','15/12/11');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Alana','11391249612',65793056040,'M','27/04/95');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Kylynn','11468058543',56830133704,'M','19/01/76');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Jamal','11824011555',47617309209,'F','24/03/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Gray','11953811991',62296086798,'M','13/09/77');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Norman','11345372006',12831246066,'F','10/08/86');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Bruno','11398808292',42515597740,'M','01/12/79');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Jasper','11406458400',66888704688,'F','28/10/11');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Joelle','11601944506',61181537517,'M','09/08/82');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Owen','11183800097',46436617523,'F','04/01/80');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Rashad','11668676324',45492854176,'M','06/01/97');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Wesley','11006222357',16111030843,'F','28/05/88');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Leo','11197719336',71908545411,'F','08/12/80');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Sloane','11312107707',26945533065,'M','11/01/01');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Alvin','11599653741',53722709707,'M','02/07/84');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Axel','11659628946',82938423835,'M','08/10/13');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Aiko','11382106169',87593299771,'M','25/03/11');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Fredericka','11932867580',84193182943,'M','14/09/93');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Ina','11326162537',73912060716,'M','28/05/03');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hilda','11458923232',46600141417,'F','23/09/13');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hayley','11064829917',95080822871,'M','12/12/81');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Stewart','11737212982',45961041996,'M','01/11/80');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Christopher','11701580989',58860456653,'M','28/05/00');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Barbara','11524336628',61864601365,'M','14/01/96');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Donna','11706323977',17328463825,'M','06/01/05');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Sierra','11933773051',14663938101,'F','28/03/14');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Rose','11698934457',61015473678,'M','12/10/98');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Abra','11290949322',33836706023,'M','10/01/89');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Justin','11207474883',55500327754,'M','16/12/86');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Vincent','11958445313',51760782466,'M','27/06/95');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Lacota','11561207682',49077583932,'F','30/12/82');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Abbot','11646867389',64224070269,'M','19/05/06');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Hilel','11469326855',33496542937,'F','04/09/04');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Emerald','11091725345',73607944365,'F','31/01/92');
+INSERT INTO ema_t_usuario (cd_usuario,nm_usuario,nr_celular,nr_cpf,ds_sexo,dt_nascimento) VALUES (sq_cd_usuario.nextval,'Alden','11383296897',40144218173,'M','12/01/88');
+-- FIM DOS INSERT'S NA TABELA DE EMA_T_USUARIO
+
+
+
+
+
+-- INSERT'S DA TABELA EMA_T_ALUNO
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (11,'gravida@leoelementum.com','diam');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (12,'sapien.molestie@tincidunt.net','bibendum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (13,'In@elit.org','ante.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (14,'metus.Vivamus@felisDonec.com','Cras');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (15,'semper.auctor.Mauris@faucibusorciluctus.co.uk','per');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (16,'sodales.purus.in@facilisiSedneque.co.uk','Aliquam');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (17,'Proin.vel@felisorciadipiscing.edu','ornare');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (18,'Nam@Nullamscelerisqueneque.ca','Nullam');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (19,'erat@metus.ca','rutrum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (20,'et@aliquam.ca','metus');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (21,'sem@egestasligulaNullam.com','Donec');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (22,'Phasellus@Cum.net','nec');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (23,'tellus.imperdiet.non@AliquamnislNulla.ca','erat.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (24,'sapien.imperdiet@necdiamDuis.ca','vitae,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (25,'placerat.orci@Nullafacilisis.com','ultricies');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (26,'Suspendisse.eleifend@senectus.co.uk','per');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (27,'Lorem@Nunccommodo.org','turpis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (28,'ornare.egestas.ligula@luctusCurabitur.net','Sed');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (29,'sapien.Aenean.massa@lobortis.edu','malesuada');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (30,'Aliquam.nec.enim@quisdiam.com','sit');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (31,'mauris.sit@magnatellus.net','nonummy');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (32,'Aliquam@sitamet.co.uk','rhoncus.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (33,'nec.orci.Donec@magna.com','vulputate,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (34,'nibh@eget.net','Donec');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (35,'lobortis@in.org','dictum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (36,'iaculis@orciluctus.edu','cursus');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (37,'eu.tempor.erat@nibh.net','a');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (38,'Ut@scelerisquemollis.ca','dui');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (39,'dui@mollisvitae.org','dis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (40,'interdum.enim.non@ligulatortordictum.net','Vestibulum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (41,'magna.malesuada@adipiscingfringilla.co.uk','risus.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (42,'orci.Phasellus@veliteget.org','augue');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (43,'justo@Quisquepurus.net','metus.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (44,'quis.lectus@ligula.co.uk','ipsum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (45,'Nulla@acarcuNunc.ca','mollis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (46,'nunc@neque.org','risus.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (47,'quis.turpis@suscipitest.co.uk','habitant');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (48,'lorem.sit@imperdieterat.com','Lorem');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (49,'dictum.Phasellus.in@antelectus.com','luctus');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (50,'sem@nonlobortisquis.org','natoque');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (51,'vehicula.et.rutrum@necdiamDuis.com','non,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (52,'pede.Cras@ridiculus.org','dignissim');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (53,'neque.et.nunc@gravidasit.ca','porttitor');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (54,'consequat@lacusAliquam.ca','Nam');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (55,'eros.nec.tellus@Nunclaoreetlectus.co.uk','nec');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (56,'est.ac@eleifend.org','scelerisque');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (57,'nisi.sem@etmagnisdis.org','congue.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (58,'id@nullavulputate.net','eu,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (59,'dui.augue@convallis.ca','nascetur');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (60,'arcu@mi.co.uk','dignissim');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (61,'Quisque@in.org','ipsum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (62,'dapibus@temporarcu.edu','cubilia');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (63,'Mauris@malesuada.ca','elementum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (64,'egestas.Fusce@nunc.net','aliquet.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (65,'pharetra.nibh.Aliquam@nullaDonec.net','in,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (66,'sapien.Nunc.pulvinar@Praesentinterdum.net','nisi');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (67,'Donec@loremeumetus.net','Quisque');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (68,'tempus.non@pellentesquemassalobortis.edu','augue');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (69,'Cras@Donecfelis.org','ipsum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (70,'blandit.congue.In@sit.ca','quis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (71,'interdum@aliquamenimnec.ca','Donec');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (72,'Curabitur@enimEtiam.com','sed');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (73,'dolor@pulvinararcu.org','dui');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (74,'dignissim.pharetra@dictumcursusNunc.edu','rutrum');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (75,'ante@magnaCrasconvallis.co.uk','ullamcorper');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (76,'risus.quis.diam@suscipit.com','Integer');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (77,'vel.quam.dignissim@quisaccumsanconvallis.org','Aenean');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (78,'Curabitur.egestas@Suspendisse.ca','Mauris');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (79,'Nulla@eget.net','augue');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (80,'congue@Vestibulumante.org','nulla');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (81,'Aenean@Nullamnisl.edu','nunc');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (82,'elit@lectusquis.co.uk','tristique');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (83,'luctus.sit@Suspendisseacmetus.co.uk','non');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (84,'odio.a@orciDonec.edu','volutpat');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (85,'nec.ante@ultriciesligulaNullam.edu','elit,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (86,'sem@posuerecubilia.org','Proin');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (87,'interdum.Nunc.sollicitudin@semperegestas.org','tellus.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (88,'cursus.luctus.ipsum@dapibus.ca','Suspendisse');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (89,'In@erosProinultrices.edu','inceptos');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (90,'Aliquam.auctor@acturpis.com','sodales.');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (91,'cursus@nuncsedlibero.net','semper');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (92,'senectus.et.netus@Duisvolutpatnunc.org','vel,');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (93,'odio.sagittis@amet.edu','convallis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (94,'a@enimCurabiturmassa.net','torquent');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (95,'eu.placerat.eget@volutpatornare.net','amet');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (96,'vitae@consequat.co.uk','sociis');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (97,'Nullam@Quisquevarius.edu','ac');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (98,'viverra.Maecenas.iaculis@fringillaeuismodenim.net','feugiat');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (99,'aliquet.nec@etcommodoat.net','Nulla');
+INSERT INTO ema_t_aluno (cd_usuario,ds_email_aluno,ds_senha_aluno) VALUES (100,'Donec.nibh@enimconsequatpurus.com','dolor');
+-- FIM DOS INSERT'S NA TABELA EMA_T_ALUNO
+
+
+
+
+-- INSERT'S DA TABELA EMA_T_ADM
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (1,'auctor.ullamcorper.nisl@ligulaNullam.ca','sit');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (2,'pretium.neque.Morbi@nequeNullam.ca','In');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (3,'metus@atsemmolestie.co.uk','amet');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (4,'Sed@Etiamvestibulummassa.org','enim.');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (5,'ut.mi@nullaIntegerurna.co.uk','sed');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (6,'magnis.dis@cursusnon.edu','hendrerit');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (7,'vitae.sodales.nisi@maurisutmi.edu','ornare');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (8,'velit.justo.nec@Sedmalesuada.edu','faucibus');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (9,'molestie.sodales@justositamet.co.uk','elementum');
+INSERT INTO ema_t_adm (cd_usuario,ds_email_adm,ds_senha_adm) VALUES (10,'non@lectuspede.net','pharetra.');
+-- FIM DOS INSERT'S DA TABELA EMA_T_ADM
+
+
+
+
+-- INSERT'S DA TABELA EMA_T_ENDERECO
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (1,62211860,'2561 Arcu Street','Maria','SP','Quebec');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (2,50571926,'Ap #389-5089 Non St.','Pi?a','SP','WP');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (3,91691134,'Ap #838-4847 Pellentesque St.','St. Catharines','SP','Ontario');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (4,80129909,'8371 Aenean Rd.','Murray Bridge','SP','SA');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (5,48062798,'8349 Tristique St.','Paço do Lumiar','SP','MA');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (6,25723764,'Ap #213-4796 Sed, Street','Taupo','SP','NI');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (7,25650167,'P.O. Box 649, 6332 Fringilla St.','Richmond','SP','BC');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (8,25292000,'8792 Nibh Av.','Warri','SP','Delta');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (9,22720139,'P.O. Box 796, 7178 Et Road','Vienna','SP','Vienna');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (10,45361007,'P.O. Box 885, 8967 Tempor St.','Belford Roxo','SP','Rio de Janeiro');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (11,44979055,'633-9244 Arcu Street','Sint-Genesius-Rode','SP','VB');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (12,62493313,'109-6651 Nec Av.','Ede','SP','Gl');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (13,70564301,'Ap #449-5362 Curabitur Rd.','Villarrica','SP','Araucanía');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (14,47593216,'P.O. Box 712, 9756 Ut, St.','Cambridge','SP','North Island');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (15,61205077,'682-2813 Eros. Rd.','Quickborn','SP','Saarland');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (16,60324661,'647-4752 Quisque Avenue','Ribeirão Preto','SP','SP');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (17,74576590,'P.O. Box 144, 6532 Erat, Road','Bremerhaven','SP','Bremen');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (18,39467674,'P.O. Box 720, 2459 Egestas. St.','Jackson','SP','Mississippi');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (19,37510505,'Ap #806-277 Sed Road','Neusiedl am See','SP','Burgenland');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (20,65425913,'688-4557 Purus. Rd.','Quinte West','SP','Ontario');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (21,50512280,'9086 Pede St.','Trollhättan','SP','Västra Götalands län');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (22,68140035,'731-6444 Nisl. St.','Vancouver','SP','BC');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (23,53179432,'3047 Ornare, Street','Campbelltown','SP','New South Wales');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (24,27707431,'Ap #847-8061 Bibendum Road','Whitehorse','SP','YK');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (25,14050791,'P.O. Box 666, 9102 Ut Av.','Laakirchen','SP','Upper Austria');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (26,65601399,'703-8473 Eget Avenue','Tredegar','SP','Monmouthshire');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (27,23243213,'Ap #310-5660 Turpis. St.','Bia?ystok','SP','PD');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (28,69877654,'P.O. Box 849, 1103 Non Rd.','Guarapuava','SP','PR');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (29,36184399,'7480 Auctor, Ave','Püttlingen','SP','Saarland');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (30,17032580,'290-1657 Risus. Rd.','Aligarh','SP','UP');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (31,57540020,'P.O. Box 694, 3858 Arcu. Rd.','Petorca','SP','V');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (32,48370707,'2087 Adipiscing St.','Cupar','SP','Fife');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (33,76819708,'157-2396 Convallis Street','Bauchi','SP','BA');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (34,11569184,'P.O. Box 596, 2079 Sem, Rd.','Cerro Navia','SP','RM');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (35,72570742,'2398 Eget, Rd.','Cáceres','SP','Extremadura');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (36,77124723,'P.O. Box 437, 209 Vehicula. Avenue','Buin','SP','Metropolitana de Santiago');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (37,68067521,'2393 Et Street','Whitburn','SP','WL');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (38,57089209,'P.O. Box 995, 3250 Cubilia Street','Falun','SP','W');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (39,94406159,'Ap #700-4430 Aliquam Avenue','Vienna','SP','Vienna');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (40,66109671,'Ap #379-6203 Elit Road','Hamburg','SP','Hamburg');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (41,49721400,'7617 Nunc Road','Vienna','SP','Wie');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (42,57378888,'5129 Sit St.','Belfast','SP','U');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (43,38099140,'Ap #108-748 Arcu. Ave','Worcester','SP','Massachusetts');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (44,15704469,'7674 Quam. St.','Béthune','SP','Nord-Pas-de-Calais');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (45,54011275,'Ap #480-6989 Parturient Street','Concepción','SP','SJ');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (46,94943606,'6625 Aliquam Road','Galway','SP','Connacht');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (47,49133916,'1001 Vel, Rd.','Queanbeyan','SP','NSW');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (48,58388451,'547-5242 Nunc Av.','Ribeirão Preto','SP','São Paulo');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (49,97304384,'796-4705 Dignissim. St.','Nuragus','SP','Sardegna');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (50,61218499,'Ap #157-7464 Luctus, Avenue','Vänersborg','SP','Västra Götalands län');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (51,28686763,'Ap #680-8853 Suspendisse Ave','Taber','SP','Alberta');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (52,68169579,'985-1030 Cum Street','Colorado Springs','SP','Colorado');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (53,71293832,'P.O. Box 189, 1728 At, St.','Burlington','SP','ON');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (54,22770298,'P.O. Box 814, 3284 Cras Road','Fontaine-Valmont','SP','HE');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (55,18227475,'182-2581 Fringilla St.','Hastings','SP','North Island');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (56,18302248,'6046 Neque Street','Roosendaal','SP','Noord Brabant');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (57,58593934,'351-4180 Ipsum Rd.','Orange','SP','New South Wales');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (58,69914393,'600 A, Rd.','Retie','SP','AN');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (59,37887711,'P.O. Box 792, 4285 A Rd.','Piracicaba','SP','SP');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (60,79452076,'Ap #942-5167 Mauris Road','Okene','SP','KO');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (61,22759969,'1469 Aliquet. Street','Stornaway','SP','RO');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (62,22593981,'5256 Ullamcorper Avenue','Dumbarton','SP','Dunbartonshire');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (63,21029696,'Ap #444-3376 Varius Ave','Denny','SP','ST');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (64,80745898,'593 Netus Av.','Neyveli','SP','Tamil Nadu');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (65,23629335,'Ap #599-3845 Facilisis Rd.','Dublin','SP','Leinster');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (66,13509088,'946-7057 Duis Ave','Springdale','SP','AK');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (67,65336777,'P.O. Box 317, 1871 Viverra. Street','Siedlce','SP','MA');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (68,50330484,'Ap #917-9621 Pede St.','Turrialba','SP','C');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (69,29860632,'191-8401 Sed Rd.','Hastings','SP','NI');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (70,67896072,'Ap #413-4026 Dictum Road','Anápolis','SP','Goiás');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (71,74611673,'Ap #981-6865 Integer Road','Göksun','SP','Kahramanmara?');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (72,68646417,'Ap #531-5383 Mauris Av.','Göteborg','SP','O');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (73,49271915,'6964 Molestie. St.','Che?m','SP','LU');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (74,41313100,'5463 Integer Av.','Nashville','SP','Tennessee');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (75,58522140,'Ap #605-9161 Elit. Rd.','San Jose','SP','CA');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (76,77510551,'Ap #986-8804 Consectetuer, Ave','Norfolk County','SP','Ontario');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (77,94509166,'206-5422 Massa Ave','San Rafael','SP','A');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (78,54645559,'P.O. Box 567, 6707 Imperdiet Avenue','Galway','SP','Connacht');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (79,55874311,'135-1476 Mi, St.','Cork','SP','M');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (80,84029263,'3816 Et, Street','Sylvan Lake','SP','Alberta');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (81,26276979,'P.O. Box 215, 8275 Est, Street','Springfield','SP','Missouri');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (82,34241007,'Ap #433-3670 Ut, Street','Cobourg','SP','ON');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (83,93189237,'169-3635 Nulla Road','Vetlanda','SP','Jönköpings län');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (84,19430067,'Ap #606-3289 Amet, Rd.','Bathurst','SP','NSW');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (85,16915886,'217-7758 Bibendum St.','Ila','SP','OS');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (86,86303676,'Ap #223-191 Vulputate, Avenue','Dover','SP','DE');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (87,52633139,'315-8730 Ac Rd.','Oyo','SP','Oyo');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (88,77251295,'Ap #343-3294 Vel, Road','Carapicuíba','SP','São Paulo');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (89,53331958,'P.O. Box 164, 7009 Auctor Rd.','Rouen','SP','Haute-Normandie');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (90,21727232,'P.O. Box 988, 2369 Vel Rd.','Bendigo','SP','Victoria');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (91,99125668,'570-1230 A, Avenue','Finspång','SP','Östergötlands län');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (92,94468322,'968-5682 Ultricies Av.','Norrköping','SP','Östergötlands län');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (93,83754423,'5634 Neque Rd.','Salihli','SP','Man');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (94,99238403,'606-6377 Fermentum St.','Invercargill','SP','South Island');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (95,41092856,'3541 Proin Avenue','Bremerhaven','SP','HB');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (96,87214763,'960-3002 Montes, Rd.','Galway','SP','Connacht');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (97,24259011,'582-8242 Egestas. St.','Burnaby','SP','British Columbia');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (98,16689588,'P.O. Box 638, 5500 Ultricies Rd.','Lebbeke','SP','Oost-Vlaanderen');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (99,66185051,'Ap #528-9949 Nisi. Avenue','Starachowice','SP','SK');
+INSERT INTO ema_t_endereco (cd_usuario,nr_cep,nm_rua,nm_cidade,nm_uf,nm_bairro) VALUES (100,23713893,'Ap #979-2392 Eu Av.','Wilmington','SP','Delaware');
+-- FIM DOS INSERT'S DA TABELA EMA_T_ENDERECO
+
+
+
+
+-- INSERT'S DA TABELA EMA_T_DISCIPLINA
+INSERT INTO ema_t_disciplina (cd_disciplina,cd_usuario,nm_disciplina,dt_registro) VALUES (sq_cd_disciplina.nextval,1,'ALGORITMOS',TO_DATE('20/05/2019','DD/MM/YYYY'));
+-- FIM DOS INSERT'S DA TABELA EMA_T_DISCIPLINA
+
+
+
+
+-- INSERT'S DA TABELA EMA_T_MATRICULA
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (11,1,'04/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (12,1,'17/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (13,1,'01/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (14,1,'30/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (15,1,'23/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (16,1,'07/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (17,1,'06/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (18,1,'11/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (19,1,'27/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (20,1,'09/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (21,1,'15/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (22,1,'17/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (23,1,'11/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (24,1,'25/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (25,1,'30/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (26,1,'22/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (27,1,'25/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (28,1,'07/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (29,1,'26/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (30,1,'07/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (31,1,'21/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (32,1,'29/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (33,1,'23/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (34,1,'27/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (35,1,'18/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (36,1,'07/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (37,1,'16/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (38,1,'10/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (39,1,'19/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (40,1,'15/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (41,1,'30/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (42,1,'10/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (43,1,'19/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (44,1,'13/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (45,1,'27/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (46,1,'18/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (47,1,'12/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (48,1,'01/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (49,1,'07/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (50,1,'13/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (51,1,'17/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (52,1,'30/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (53,1,'06/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (54,1,'13/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (55,1,'03/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (56,1,'18/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (57,1,'22/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (58,1,'26/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (59,1,'16/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (60,1,'27/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (61,1,'30/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (62,1,'12/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (63,1,'31/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (64,1,'20/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (65,1,'08/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (66,1,'13/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (67,1,'31/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (68,1,'25/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (69,1,'28/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (70,1,'11/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (71,1,'03/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (72,1,'17/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (73,1,'04/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (74,1,'28/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (75,1,'28/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (76,1,'19/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (77,1,'18/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (78,1,'22/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (79,1,'11/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (80,1,'17/10/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (81,1,'15/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (82,1,'15/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (83,1,'15/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (84,1,'02/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (85,1,'01/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (86,1,'30/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (87,1,'22/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (88,1,'26/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (89,1,'28/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (90,1,'01/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (91,1,'16/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (92,1,'22/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (93,1,'15/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (94,1,'23/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (95,1,'25/09/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (96,1,'03/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (97,1,'25/06/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (98,1,'05/07/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (99,1,'14/08/19');
+INSERT INTO ema_t_matricula (cd_usuario,cd_disciplina,dt_matricula) VALUES (100,1,'21/09/19');
+-- FIM DOS INSERT'S DA TABELA EMA_T_MATRICULA
+
+COMMIT;

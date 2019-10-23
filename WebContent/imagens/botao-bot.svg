@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="223" height="144" viewBox="0 0 223 144">
+  <g id="Grupo_64" data-name="Grupo 64" transform="translate(-1697 -1118)">
+    <rect id="Retângulo_40" data-name="Retângulo 40" width="218" height="27" transform="translate(1702 1183)" fill="#3e3d3d"/>
+    <g id="Componente_6" data-name="Componente 6" transform="translate(1697 1118)">
+      <circle id="Elipse_12" data-name="Elipse 12" cx="72" cy="72" r="72" fill="#3e3d3d"/>
+      <g id="Elipse_13" data-name="Elipse 13" transform="translate(13 13)" fill="none" stroke="#3ef2ff" stroke-width="5">
+        <circle cx="59" cy="59" r="59" stroke="none"/>
+        <circle cx="59" cy="59" r="56.5" fill="none"/>
+      </g>
+      <text id="HELP_" data-name="HELP !" transform="matrix(0.94, -0.342, 0.342, 0.94, 33.839, 92.485)" fill="#3ef2ff" font-size="25" font-family="MVBoli, MV Boli"><tspan x="0" y="0">HELP !</tspan></text>
+    </g>
+  </g>
+</svg>

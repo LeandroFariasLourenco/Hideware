@@ -1,0 +1,11 @@
+<svg id="Grupo_67" data-name="Grupo 67" xmlns="http://www.w3.org/2000/svg" width="154" height="159" viewBox="0 0 154 159">
+  <ellipse id="Elipse_12" data-name="Elipse 12" cx="77" cy="79.5" rx="77" ry="79.5" fill="#3e3d3d"/>
+  <g id="Elipse_13" data-name="Elipse 13" transform="translate(23 23)" fill="none" stroke="#3ef2ff" stroke-width="5">
+    <ellipse cx="54.5" cy="57" rx="54.5" ry="57" stroke="none"/>
+    <ellipse cx="54.5" cy="57" rx="52" ry="54.5" fill="none"/>
+  </g>
+  <g id="Grupo_66" data-name="Grupo 66">
+    <text id="QUIT_" data-name="QUIT !
+" transform="matrix(0.94, -0.342, 0.342, 0.94, 43, 100)" fill="#3ef2ff" font-size="24" font-family="MVBoli, MV Boli"><tspan x="0" y="0">QUIT !</tspan><tspan x="0" y="38"></tspan></text>
+  </g>
+</svg>

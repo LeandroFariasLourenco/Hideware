@@ -1,0 +1,8 @@
+<svg id="Componente_1" data-name="Componente 1" xmlns="http://www.w3.org/2000/svg" width="251" height="251" viewBox="0 0 251 251">
+  <circle id="Elipse_12" data-name="Elipse 12" cx="125.5" cy="125.5" r="125.5" fill="#3e3d3d"/>
+  <g id="Elipse_13" data-name="Elipse 13" transform="translate(23 23)" fill="none" stroke="#3ef2ff" stroke-width="5">
+    <circle cx="103" cy="103" r="103" stroke="none"/>
+    <circle cx="103" cy="103" r="100.5" fill="none"/>
+  </g>
+  <text id="HELP_" data-name="HELP !" transform="matrix(0.94, -0.342, 0.342, 0.94, 60, 164)" fill="#3ef2ff" font-size="46" font-family="MVBoli, MV Boli"><tspan x="0" y="0">HELP !</tspan></text>
+</svg>
